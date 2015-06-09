@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<script src="js/md5.min.js" type="text/javascript" charset="utf-8"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">在线设备</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+			</ul>
+		</div>
+		<script type="text/javascript">
+			if (window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener('plusready', plusReady, false);
+			}
+			
+			//tyep:dev 推送单个设备， app 群推 
+			function sendmessage(appid, type, adid, message){
+				console.log('send message')
+				var timestamp = Date.now();
+				var devices = plus.storage.getItem('device')
+				devices = JSON.parse(devices)
+				var appkey = devices[appid]
+				if(type == 'dev'){
+					var url = 'http://192.168.0.241/openapi/device/' + adid + '/message'
+				}else if(type == 'app'){
+					var url = 'http://192.168.0.241/openapi/app/' + adid + '/message'
+				}else{
+					return null
+				}
+				var timestamp = Date.now();
+				var buf = 'get' + 'timestamp=' + timestamp +'&message=' + message + '&appid=' + appid + appkey;
+				console.log(buf)
+				var sign = md5(buf);
+				url = url + '?appid=' + appid + '&timestamp=' + timestamp + '&sign=' + sign
+				mui.ajax(url,{
+					data:{
+							'message': message
+					},
+					dataType: 'json',
+					type:'get',
+					success: function(data){
+						console.log(data)
+					},
+					error: function(xhr, type, errorThrown){
+						console.log('error')
+					}
+				})
+				
+			}
+			
+			function getDeviceList(appid, appkey, li) {
+				var timestamp = Date.now();
+				var buf = 'get' + 'timestamp=' + timestamp + '&appid=' + appid + appkey;
+				var sign = md5(buf);
+				var url = 'http://192.168.0.241/openapi/devices/list/';
+				mui.ajax(url, {
+					data: {
+						'appid': appid,
+						'timestamp': timestamp,
+						'sign': sign
+					},
+					type: 'get',
+					success: function(data) {
+						for(i in data){
+							var appid = data[i]['appid'];
+							var devid = data[i]['devid'];
+							var latest = data[i]['latest'];
+							var html = '<div class="mui-collapse-content"><span>设备号' + 
+										devid+ '</span><button class="mui-pull-right">发送消息</button></div>'
+							var div = document.createElement("div")
+							div.innerHTML = html
+							var ele = div.childNodes[0]
+							ele.querySelector('button').addEventListener('click', function(){
+								var btnArray = ['确定','取消'];
+								mui.prompt(' ',' ','请输入消息',btnArray,function(e){
+									if(e.index==0){
+										message= e.value
+										sendmessage(appid, 'dev', devid, message)
+									}else{
+										
+									}
+								});
+							})
+							// 添加设置dom
+							li.appendChild(ele)
+							
+						}
+						var ul = document.querySelector("ul")
+						ul.appendChild(li)
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.ui.toast("网络出问题，等等再试!", {
+								verticalAlign: "center"});
+					}
+				});
+			};
+
+			function plusReady() {
+				// 隐藏滚动条
+				plus.webview.currentWebview().setStyle({
+					scrollIndicator: 'none'
+				});
+				plus.nativeUI.showWaiting( "等待中..." );
+				var devices = plus.storage.getItem('device')
+				devices = JSON.parse(devices)
+				for (id in devices) {
+					var appid = id;
+					var appkey = devices[id]
+					// 增加一个li dom
+					var devhtml = '<li class="mui-table-view-cell mui-collapse">'+
+						'<a class="mui-navigate-right" href="#">应用' + appid + 
+						'</a><div class="mui-collapse-content"><span>该应用下所有设置群发</span><button class="mui-pull-right">群发消息</button></div></li>'
+					var div = document.createElement('div');
+					div.innerHTML = devhtml;
+					var ele = div.childNodes[0]
+					ele.querySelector('button').addEventListener('click', function(){
+						var btnArray = ['确定','取消'];
+								mui.prompt(' ',' ','请输入消息',btnArray,function(e){
+									if(e.index==0){
+										message= e.value
+										sendmessage(appid, 'app', appid, message)
+									}else{
+										
+									}
+						});	
+					})
+									
+					// 获取设备列表
+					getDeviceList(appid, appkey, ele)
+				}
+				plus.nativeUI.closeWaiting()
+				
+			}
+		</script>
+	</body>
+
+</html>

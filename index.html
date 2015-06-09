@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的设备</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">设备</a>
+					<div class="mui-collapse-content">
+						<ul class="mui-table-view mui-table-view-chevron">
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right" onclick="clicked('barcode_scan.html',true,true);">
+								添加设备
+							</a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right" href='devicelist.html'>
+								在线终端
+							</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">面板2</a>
+					<div class="mui-collapse-content">
+						<p>面板2子内容</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			 // 扩展API是否准备好，如果没有则监听“plusready"事件
+			if (window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+			 // 扩展API准备完成后要执行的操作
+			function plusReady() {
+				plus.key.addEventListener('backbutton', function() {
+					if (confirm('确认退出？')) {
+						plus.runtime.quit();
+					}
+				}, false);
+			};
+			function scaned(t, r, f){
+				//console.log(t)
+				//console.log(r)
+				//console.log(f)
+				var app = r.split("-")
+				var device = plus.storage.getItem('device')
+				if(!device){
+					device = {}
+				}
+				else{
+					device = JSON.parse(device)
+				}
+				device[app[0]] = app[1]
+				console.log(JSON.stringify(device))
+				plus.storage.setItem('device', JSON.stringify(device))
+
+			}
+		</script>
+	</body>
+
+</html>
