@@ -106,10 +106,10 @@
                         "settings-retina": ""/*iPhone 高分屏设置页面程序图标，分辨率：58x58*/
                     },
                     "ipad": {
-                        "normal": "res/72.png", /*iPad普通屏幕程序图标，分辨率：72x72*/
-                        "retina": "res/144.png", /*iPad高分屏程序图标，分辨率：144x144*/
-                        "normal7": "res/76.png", /*iPad iOS7程序图标，分辨率：76x76*/
-                        "retina7": "res/152.png", /*iPad iOS7高分屏程序图标，分辨率：152x152*/
+                        "normal": "res\\72.png", /*iPad普通屏幕程序图标，分辨率：72x72*/
+                        "retina": "res\\144.png", /*iPad高分屏程序图标，分辨率：144x144*/
+                        "normal7": "res\\76.png", /*iPad iOS7程序图标，分辨率：76x76*/
+                        "retina7": "res\\152.png", /*iPad iOS7高分屏程序图标，分辨率：152x152*/
                         "spotlight-normal": "res/50.png", /*iPad Spotlight搜索程序图标，分辨率：50x50*/
                         "spotlight-retina": "res/100.png", /*iPad高分屏Spotlight搜索程序图标，分辨率：100x100*/
                         "spotlight-normal7": "res/40.png",/*iPad iOS7 Spotlight搜索程序图标，分辨率：40x40*/
@@ -119,11 +119,11 @@
                     }
                 },
                 "android": {
-                    "mdpi": "", /*普通屏程序图标，分辨率：48x48*/
-                    "ldpi": "", /*大屏程序图标，分辨率：48x48*/
-                    "hdpi": "", /*高分屏程序图标，分辨率：72x72*/
-                    "xhdpi": "",/*720P高分屏程序图标，分辨率：96x96*/
-                    "xxhdpi": ""/*1080P 高分屏程序图标，分辨率：144x144*/
+                    "mdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\50.png", /*普通屏程序图标，分辨率：48x48*/
+                    "ldpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\100.png", /*大屏程序图标，分辨率：48x48*/
+                    "hdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\72.png", /*高分屏程序图标，分辨率：72x72*/
+                    "xhdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\100.png",/*720P高分屏程序图标，分辨率：96x96*/
+                    "xxhdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\144.png"/*1080P 高分屏程序图标，分辨率：144x144*/
                 }
             },
             "splashscreen": {

@@ -37,9 +37,9 @@
 				devices = JSON.parse(devices)
 				var appkey = devices[appid]
 				if(type == 'dev'){
-					var url = 'http://192.168.0.241/openapi/device/' + adid + '/message'
+					var url = 'http://211.155.86.145:8000/openapi/device/' + adid + '/message'
 				}else if(type == 'app'){
-					var url = 'http://192.168.0.241/openapi/app/' + adid + '/message'
+					var url = 'http://211.155.86.145:8000/openapi/app/' + adid + '/message'
 				}else{
 					return null
 				}
@@ -68,7 +68,7 @@
 				var timestamp = Date.now();
 				var buf = 'get' + 'timestamp=' + timestamp + '&appid=' + appid + appkey;
 				var sign = md5(buf);
-				var url = 'http://192.168.0.241/openapi/devices/list/';
+				var url = 'http://211.155.86.145:8000/openapi/devices/list/';
 				mui.ajax(url, {
 					data: {
 						'appid': appid,
