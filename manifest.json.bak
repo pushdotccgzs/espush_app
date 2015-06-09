@@ -17,6 +17,12 @@
         "url": "http://espush.cn"/*开发者个人主页地址*/
     },
     "permissions": {
+        "Accelerometer": {
+            "description": "访问加速度感应器"
+        },
+        "Audio": {
+            "description": "访问麦克风"
+        },
         "Cache": {
             "description": "管理应用缓存"
         },
@@ -25,6 +31,12 @@
         },
         "Console": {
             "description": "跟踪调试输出日志"
+        },
+        "Contacts": {
+            "description": "访问系统联系人信息"
+        },
+        "Device": {
+            "description": "访问设备信息"
         },
         "Downloader": {
             "description": "文件下载管理"
@@ -35,8 +47,23 @@
         "File": {
             "description": "访问本地文件系统"
         },
+        "Gallery": {
+            "description": "访问系统相册"
+        },
+        "Geolocation": {
+            "description": "访问位置信息"
+        },
          "Invocation": {
             "description": "使用Native.js能力"
+        },
+        "Messaging": {
+            "description": "访问通讯能力"
+        },
+        "Orientation": {
+            "description": "访问方向感应器"
+        },
+        "Proximity": {
+            "description": "访问距离感应器"
         },
         "Storage": {
             "description": "管理应用本地数据"
@@ -58,6 +85,24 @@
         },
         "Barcode": {
             "description": "管理二维码扫描插件"
+        },
+        "Maps": {
+            "description": "管理地图插件"
+        },
+        "Payment": {
+            "description": "管理支付插件"
+        },
+        "Push": {
+            "description": "管理推送消息插件"
+        },
+        "Share": {
+            "description": "管理社交分享插件"
+        },
+        "Speech": {
+            "description": "管理语音识别插件"
+        },
+        "Statistic": {
+            "description": "管理统计插件"
         }
     },
     "plus": {
@@ -106,16 +151,16 @@
                         "settings-retina": ""/*iPhone 高分屏设置页面程序图标，分辨率：58x58*/
                     },
                     "ipad": {
-                        "normal": "res/72.png", /*iPad普通屏幕程序图标，分辨率：72x72*/
-                        "retina": "res/144.png", /*iPad高分屏程序图标，分辨率：144x144*/
-                        "normal7": "res/76.png", /*iPad iOS7程序图标，分辨率：76x76*/
-                        "retina7": "res/152.png", /*iPad iOS7高分屏程序图标，分辨率：152x152*/
-                        "spotlight-normal": "res/50.png", /*iPad Spotlight搜索程序图标，分辨率：50x50*/
-                        "spotlight-retina": "res/100.png", /*iPad高分屏Spotlight搜索程序图标，分辨率：100x100*/
-                        "spotlight-normal7": "res/40.png",/*iPad iOS7 Spotlight搜索程序图标，分辨率：40x40*/
-                        "spotlight-retina7": "res/80.png",/*iPad iOS7高分屏Spotlight搜索程序图标，分辨率：80x80*/
-                        "settings-normal": "res/29.png",/*iPad设置页面程序图标，分辨率：29x29*/
-                        "settings-retina": "res/58.png" /*iPad高分屏设置页面程序图标，分辨率：58x58*/
+                        "normal": "", /*iPad普通屏幕程序图标，分辨率：72x72*/
+                        "retina": "", /*iPad高分屏程序图标，分辨率：144x144*/
+                        "normal7": "", /*iPad iOS7程序图标，分辨率：76x76*/
+                        "retina7": "", /*iPad iOS7高分屏程序图标，分辨率：152x152*/
+                        "spotlight-normal": "", /*iPad Spotlight搜索程序图标，分辨率：50x50*/
+                        "spotlight-retina": "", /*iPad高分屏Spotlight搜索程序图标，分辨率：100x100*/
+                        "spotlight-normal7": "",/*iPad iOS7 Spotlight搜索程序图标，分辨率：40x40*/
+                        "spotlight-retina7": "",/*iPad iOS7高分屏Spotlight搜索程序图标，分辨率：80x80*/
+                        "settings-normal": "",/*iPad设置页面程序图标，分辨率：29x29*/
+                        "settings-retina": "" /*iPad高分屏设置页面程序图标，分辨率：58x58*/
                     }
                 },
                 "android": {
@@ -134,7 +179,7 @@
                         "retina40": ""/*4.0 英寸设备(iPhone5)启动图片，分辨率：640x1136*/
                     },
                     "ipad": {
-                        "portrait": "res/big.png", /*iPad竖屏启动图片，分辨率：768x1004*/
+                        "portrait": "", /*iPad竖屏启动图片，分辨率：768x1004*/
                         "portrait-retina": "",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
                         "landscape": "", /*iPad横屏启动图片，分辨率：1024x748*/
                         "landscape-retina": "", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
