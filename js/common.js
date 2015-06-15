@@ -98,22 +98,6 @@ function compatibleAdjust(){
 	if(adjust||!w.plus||!domready){
 		return;
 	}	// iOS平台使用滚动的div
-	if('iOS'==plus.os.name){
-		var t=document.getElementById("dcontent");
-		t&&(t.className="sdcontent");
-		t=document.getElementById("content");
-		t&&(t.className="scontent");
-		//iOS8横竖屏切换div不更新滚动问题
-		var lasto=window.orientation;
-		window.addEventListener("orientationchange",function(){
-			var nowo=window.orientation;
-			if(lasto!=nowo&&(90==nowo||-90==nowo)){
-				dcontent&&(0==dcontent.scrollTop)&&(dcontent.scrollTop=1);
-				content&&(0==content.scrollTop)&&(content.scrollTop=1);
-			}
-			lasto=nowo;
-		},false);
-	}
 	adjust=true;
 };
 w.compatibleConfirm=function(){

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>设备分类</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="mui-conten">
+			<ul class="mui-table-view devs">
+				<li class="mui-table-view-cell devs_empty">暂空</li>
+				<!--
+				<li class="mui-table-view-cell">
+					<button type="button" class="mui-btn mui-btn-primary">指令群推</button>
+				</li>
+				-->
+			</ul>
+			
+			<button class="mui-btn mui-btn-positive mui-btn-block qrcode_btn">扫描二维码添加</button>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+		</script>
+		<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" charset="utf-8">
+			document.querySelector(".qrcode_btn").addEventListener('tap', function(e) {
+				clicked('barcode_scan.html', true, true);
+			}, false);
+			function scaned(t, r, f){
+				var app = r.split("-");
+				var device = plus.storage.getItem('device');
+				if(!device){
+					device = {};
+				}
+				else{
+					device = JSON.parse(device);
+				}
+				device[app[0]] = app[1];
+				console.log(JSON.stringify(device));
+				plus.storage.setItem('device', JSON.stringify(device));
+			}
+		</script>
+		<script>
+		//需要获得设备分类名称后方能添加。
+			function add_li_el(appid, appkey) {
+				var li_el = document.createElement("li");
+				var btn_el = document.createElement("button");
+				li_el.appendChild(btn_el);
+			}
+		
+			function plusReady() {
+				var devs = plus.storage.getItem('device');
+				for(appid in devs) {
+					if(devs.hasOwnProperty(appid)) {
+						add_li_el(appid, devs[appid]);
+					}
+				}
+			};
+			
+			if (window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener('plusready', plusReady, false);
+			}
+		</script>
+	</body>
+
+</html>
