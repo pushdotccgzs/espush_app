@@ -12,58 +12,184 @@
 			<ul class="mui-table-view devs">
 				<li class="mui-table-view-cell devs_empty">暂空</li>
 				<!--
-				<li class="mui-table-view-cell">
+					<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="javascript:;">
+						actionsheet（操作表）
+					</a>
 					<button type="button" class="mui-btn mui-btn-primary">指令群推</button>
+					<ul class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right" href="examples/actionsheet.html">
+								设备12345<button type="button" class="mui-btn mui-btn-primary">指令单推</button>
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right" href="examples/actionsheet-plus.html">
+								原生模式actionsheet
+							</a>
+						</li>
+					</ul>
 				</li>
 				-->
 			</ul>
 			
 			<button class="mui-btn mui-btn-positive mui-btn-block qrcode_btn">扫描二维码添加</button>
 		</div>
+		<script src="js/server.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/md5.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init();
 		</script>
 		<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript" charset="utf-8">
-			document.querySelector(".qrcode_btn").addEventListener('tap', function(e) {
-				clicked('barcode_scan.html', true, true);
-			}, false);
-			function scaned(t, r, f){
-				var app = r.split("-");
-				var device = plus.storage.getItem('device');
-				if(!device){
-					device = {};
-				}
-				else{
-					device = JSON.parse(device);
-				}
-				device[app[0]] = app[1];
-				console.log(JSON.stringify(device));
-				plus.storage.setItem('device', JSON.stringify(device));
-			}
-		</script>
+
 		<script>
-		//需要获得设备分类名称后方能添加。
+			//在线终端
+			function add_online_dev(appid, appkey) {
+				var timestamp = Date.now();
+				var url = "http://" + gl_server + "/openapi/devices/list/";
+				var sign = md5(getSignBuf('get', appid, appkey, timestamp, {}));
+				url += "?" + getParams(appid, timestamp, sign);
+				
+				mui.ajax(url, {
+					dataType: 'json',
+					type:'get',
+					success: function(online_arr) {
+						var par_li_el = document.getElementById("app-" + appid);
+						if(!par_li_el) {
+							return;
+						}
+						
+						if(online_arr.length <= 0) {
+							return;
+						}
+						
+						par_li_el.classList.add("mui-collapse");
+						var sub_ul_el = par_li_el.getElementsByTagName("ul");
+						if(sub_ul_el.length == 0) {
+							sub_ul_el = document.createElement("ul");
+							sub_ul_el.className = "mui-table-view mui-table-view-chevron";
+							par_li_el.appendChild(sub_ul_el);
+						}
+						
+						for(var i=0; i != online_arr.length; ++i) {
+							var cur_li_el = document.createElement("li");
+							cur_li_el.classList.add("mui-table-view-cell");
+							cur_li_el.id = "dev-" + online_arr[i].devid;
+							
+							var cur_href_el = document.createElement("a");
+							cur_href_el.classList.add("mui-navigate-right");
+							cur_href_el.innerText = online_arr[i].devid;
+							
+							var cur_btn_el = document.createElement("button");
+							cur_btn_el.className = "mui-btn mui-btn-primary";
+							cur_btn_el.innerText = "指令单推";
+							
+							cur_href_el.appendChild(cur_btn_el);
+							cur_li_el.appendChild(cur_href_el);
+							sub_ul_el.appendChild(cur_li_el);
+						}
+						console.log(online_arr);
+					},
+					
+					error: function(err, xhr, obj) {
+						console.log("ERROR " + xhr);
+					}
+				});
+			}
+			
+			function add_dev_storage(appid, appkey) {
+				var devs = plus.storage.getItem('device');
+				var devices = '';
+				if(!devs) {
+					devices = {};
+				} else {
+					devices = JSON.parse(devs);
+				}
+				devices[appid] = appkey;
+				plus.storage.setItem('device', JSON.stringify(devices));
+			}
+			
+			function remove_dev_storage(appid, appkey) {
+				var devs = plus.storage.getItem('device');
+				var devices = '';
+				if(!devs) {
+					devices = {};
+				} else {
+					devices = JSON.parse(devs);
+				}
+				
+				delete devices[appid];
+				plus.storage.setItem('device', JSON.stringify(devices));
+			}
+			
 			function add_li_el(appid, appkey) {
-				var li_el = document.createElement("li");
-				var btn_el = document.createElement("button");
-				li_el.appendChild(btn_el);
+				console.log("appid: " + appid + " appkey: " + appkey);
+				var timestamp = Date.now();
+				var url = "http://" + gl_server + "/openapi/apps/";
+				var sign = md5(getSignBuf('get', appid, appkey, timestamp, {}));
+				url += "?" + getParams(appid, timestamp, sign);
+				
+				plus.nativeUI.toast("设备分类 " + appid + " 查询");
+				mui.ajax(url, {
+					dataType: 'json',
+					type:'get',
+					success: function(data){
+						var ul_el = document.querySelector("ul.devs");
+						var li_el = document.createElement("li");
+						var href_el = document.createElement("a");
+						var btn_el = document.createElement("button");
+						href_el.classList.add("mui-navigate-right");
+						li_el.classList.add("mui-table-view-cell");
+						btn_el.classList.add("mui-btn");
+						btn_el.classList.add("mui-btn-primary");
+
+						href_el.innerText = data.name;
+						li_el.id = "app-" + appid;
+						btn_el.innerText = "指令群推";
+						li_el.appendChild(href_el);
+						li_el.appendChild(btn_el);
+						ul_el.appendChild(li_el);
+						
+						var empty_el = document.querySelector("ul.devs li.devs_empty");
+						if(empty_el) {
+							empty_el.parentNode.removeChild(empty_el);
+						}
+						
+						add_online_dev(appid, appkey);
+					},
+					error: function(xhr, type, errorThrown){
+						remove_dev_storage(appid, appkey);
+					}
+				});
 			}
 		
 			function plusReady() {
-				var devs = plus.storage.getItem('device');
-				for(appid in devs) {
+				var devs = JSON.parse(plus.storage.getItem('device'));
+				
+				//设备分类
+				for(var appid in devs) {
 					if(devs.hasOwnProperty(appid)) {
 						add_li_el(appid, devs[appid]);
 					}
-				}
+				};
 			};
 			
 			if (window.plus) {
 				plusReady();
 			} else {
 				document.addEventListener('plusready', plusReady, false);
+			}
+
+			document.querySelector(".qrcode_btn").addEventListener('tap', function(e) {
+				clicked('barcode_scan.html', true, true);
+			}, false);
+
+			function scaned(t, r, f){
+				var app = r.split("-");
+				add_dev_storage(app[0], app[1]);
+				plus.nativeUI.toast("正在为您查询设备分类信息");
+				add_li_el(app[0], app[1]);
 			}
 		</script>
 	</body>
