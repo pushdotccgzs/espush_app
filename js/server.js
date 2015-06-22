@@ -1,4 +1,5 @@
-var gl_server = '192.168.0.241:8000';
+var gl_protocol = 'https://';
+var gl_server = 'espush.cn';
 var gl_timeout = 5000;
 
 function getSignBuf(method, appid, appkey, timestamp, param) {

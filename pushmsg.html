@@ -3,53 +3,48 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>设备上传</title>
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>推送指令到</span></title>
     <link href="css/mui.min.css" rel="stylesheet"/>
 </head>
 <body>
-	<div class="mui-content">
-		<div id="slider" class="mui-slider">
-			<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-				<a href="#item1" class="mui-control-item">
-					设备数据
-				</a>
-				<a href="#item2" class="mui-control-item">
-					历史推送
-				</a>
-			</div>
-			
-			<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
-			<div class="mui-slider-group">
-				<div id="item1" class="mui-slider-item mui-control-content mui-active">
-					<ul class="mui-table-view">
-						<li class="mui-table-view-cell">内容区域1</li>
-						<li class="mui-table-view-cell">内容区域2</li>
-						<li class="mui-table-view-cell">内容区域3</li>
-						<li class="mui-table-view-cell">内容区域4</li>
-					</ul>
-				</div>
+	<header id="header" class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">推送指令到<span id="push_title"></span></h1>
+	</header>
 
-				<div id="item2" class="mui-slider-item mui-control-content mui-active">
-					<ul class="mui-table-view">
-						<li class="mui-table-view-cell">1内容区域1</li>
-						<li class="mui-table-view-cell">2内容区域2</li>
-						<li class="mui-table-view-cell">3内容区域3</li>
-						<li class="mui-table-view-cell">4内容区域4</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+	<div class="mui-content">
+		<p style="margin: 35px 15px;">推送数据、指令到设备，请正确选择指令类型</p>
+		
+		<p class="mui-content-padded">指令类型</p>
+		<select name="cmdtype" class="mui-select">
+			<option value="MSG">文本数据</option>
+			<option value="HEX">原始数据 HEX</option>
+			<option value="AT">AT指令</option>
+			<option value="LUA">Lua指令</option>
+		</select>
+		<p class="mui-content-padded">指令内容</p>
+		<textarea name="cmdbody" rows="4" cols="6"></textarea>
+		<button class="mui-btn mui-btn-negative mui-btn-outlined" onclick="push_go();">=>推=></button>
 	</div>
-	
-	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript">
-		mui.init({
-			swipeBack: false
-		});
-		
-		
-	</script>
+
+	<script src="js/mui.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+      	window.addEventListener('pushmsg', function(event) {
+      		var title = document.querySelector('#push_title');
+      		var detail = event.detail;
+      		var target_type = detail.target_type;
+      		var appid = detail.appid;
+      		var appkey = detail.appkey;
+      		
+      		if(target_type == 'app') {
+      			title.innerHTML = " 设备分类 " + appid;
+      		}
+      	});
+      	
+      	function push_go() {
+      		console.log("FUCK");
+      	}
+    </script>
 </body>
 </html>
