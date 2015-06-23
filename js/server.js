@@ -25,7 +25,7 @@ function getSignBuf(method, appid, appkey, timestamp, param) {
 		}
 	}
 	buf += appkey;
-	
+	buf = buf.toLowerCase();
 	return buf;
 }
 

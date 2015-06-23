@@ -24,27 +24,56 @@
 		</select>
 		<p class="mui-content-padded">指令内容</p>
 		<textarea name="cmdbody" rows="4" cols="6"></textarea>
-		<button class="mui-btn mui-btn-negative mui-btn-outlined" onclick="push_go();">=>推=></button>
+		<button class="mui-btn mui-btn-negative mui-btn-outlined push_btn">=>推=></button>
 	</div>
 
 	<script src="js/mui.min.js"></script>
+	<script src="js/server.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/md5.min.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
       	mui.init();
+      	var detail = null;
       	window.addEventListener('pushmsg', function(event) {
-      		var title = document.querySelector('#push_title');
-      		var detail = event.detail;
-      		var target_type = detail.target_type;
-      		var appid = detail.appid;
-      		var appkey = detail.appkey;
+      		detail = event.detail;
       		
-      		if(target_type == 'app') {
-      			title.innerHTML = " 设备分类 " + appid;
+      		if(detail.target_type == 'app') {
+      			document.querySelector('#push_title').innerHTML = " 设备分类 " + detail.appid;
       		}
       	});
       	
-      	function push_go() {
-      		console.log("FUCK");
-      	}
+		document.querySelector('button.push_btn').addEventListener('click', function(event){
+			//用户填空判断
+			var msgformat = document.querySelector('select').value;
+			var body = document.querySelector('textarea').value;
+			
+			var appid = detail.appid;
+			var appkey = detail.appkey;
+			
+			//验证参数获取
+			var timestamp = Date.now();
+			var params = {
+				'format': msgformat,
+				'message': body
+			};
+			
+			var url = gl_protocol + gl_server + '/openapi/app/push/message/';
+			var sign = md5(getSignBuf('post', appid, appkey, timestamp, params));
+			url += "?" + getParams(appid, timestamp, sign);
+			mui.ajax(url, {
+				type: 'post',
+				data: params,
+				timeout: gl_timeout,
+				dataType: 'json',
+				success: function(obj) {
+					alert("推送成功");
+					mui.back();
+				},
+				error: function(xhr, type, err) {
+					console.log("error...");
+				}
+			});
+		}, false);
+
     </script>
 </body>
 </html>

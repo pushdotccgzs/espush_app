@@ -4,39 +4,18 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>在线终端</title>
+		<title>指令单推</title>
 		<link href="css/mui.min.css" rel="stylesheet" />
 	</head>
 
 	<body>
-		<div class="mui-conten">
-
-			<ul class="mui-table-view">
-				<li class="mui-table-view-cell">暂空</li>
-				<li class="mui-table-view-cell mui-collapse">
-					<a class="mui-navigate-right" href="javascript:;">
-						actionsheet（操作表）
-					</a>
-					<ul class="mui-table-view mui-table-view-chevron">
-						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right" href="examples/actionsheet.html">
-								H5模式actionsheet
-							</a>
-						</li>
-						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right" href="examples/actionsheet-plus.html">
-								原生模式actionsheet
-							</a>
-						</li>
-					</ul>
-				</li>
-			</ul>
+		<div class="mui-content">
 		</div>
 
 
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/server.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/md5.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		mui.init();
 		function plusReady() {
@@ -49,6 +28,63 @@
 		} else {
 			document.addEventListener('plusready', plusReady, false);
 		}
+		
+		//在线终端
+		function add_online_dev(appid, appkey) {
+			var timestamp = Date.now();
+			var url = gl_protocol + gl_server + "/openapi/devices/list/";
+			var sign = md5(getSignBuf('get', appid, appkey, timestamp, {}));
+			url += "?" + getParams(appid, timestamp, sign);
+			
+			mui.ajax(url, {
+				dataType: 'json',
+				type:'get',
+				success: function(online_arr) {
+					var par_li_el = document.querySelector("div.mui-content");
+					if(!par_li_el) {
+						return;
+					}
+					
+					if(online_arr.length <= 0) {
+						//是否需要增加空栏、暂空
+						return;
+					}
+										
+					for(var i=0; i != online_arr.length; ++i) {
+						var s1 = ['	    <h5 class="mui-content-padded" style="margin-top: 15px;">设备分类 <span>' + appid + '</span></h5>',
+						'			<ul class="mui-table-view devs">',
+						'				<li class="mui-table-view-cell">',
+						'					<a class="mui-navigate-right">' + online_arr[i].devid + '</a>',
+						'					<button class="mui-btn mui-btn-primary pushbtn push_dev" data-appid="' + appid +'" data-appkey="'+ appkey +'" data-devid="'+ online_arr[i].devid +'">推送</button>',
+						'				</li>',
+						'			</ul>'].join("");
+						var div_el = document.createElement("div");
+						div_el.innerHTML = s1;
+						par_li_el.appendChild(div_el);
+					}
+				},
+				
+				error: function(err, xhr, obj) {
+					console.log("ERROR " + xhr);
+				}
+			});
+		}
+		
+		var detail = null;
+		window.addEventListener('app_info_got', function(event) {
+			detail = event.detail;
+			var appid = detail.appid;
+			var appkey = detail.appkey;
+			
+			add_online_dev(appid, appkey);
+		}, false);
+		
+		mui(".mui-content").on('click', 'button', function(event) {
+			var target = event.target;
+			var appid = target.dataset['appid'];
+			var appkey = target.dataset['appkey'];
+			var devid = target.dataset['devid'];
+		});
 	</script>
 	</body>
 
