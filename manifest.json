@@ -3,7 +3,7 @@
     "id": "H501BA9E2",/*应用的标识，创建应用时自动生成，勿手动修改*/
     "name": "ES-PUSH",/*应用名称，程序桌面图标名称*/
     "version": {
-        "name": "1.0.2",/*应用版本名称*/
+        "name": "1.0.3",/*应用版本名称*/
         "code": "83"
     },
     "description": "",/*应用描述信息*/
@@ -116,10 +116,10 @@
                     }
                 },
                 "android": {
-                    "mdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\50.png", /*普通屏程序图标，分辨率：48x48*/
-                    "ldpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\100.png", /*大屏程序图标，分辨率：48x48*/
+                    "mdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\48.png", /*普通屏程序图标，分辨率：48x48*/
+                    "ldpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\48.png", /*大屏程序图标，分辨率：48x48*/
                     "hdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\72.png", /*高分屏程序图标，分辨率：72x72*/
-                    "xhdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\100.png",/*720P高分屏程序图标，分辨率：96x96*/
+                    "xhdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\96.png",/*720P高分屏程序图标，分辨率：96x96*/
                     "xxhdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\144.png"/*1080P 高分屏程序图标，分辨率：144x144*/
                 }
             },
@@ -142,11 +142,11 @@
                     }
                 },
                 "android": {
-                    "mdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\big.png", /*普通屏启动图片，分辨率：240x282*/
-                    "ldpi": "", /*大屏启动图片，分辨率：320x442*/
-                    "hdpi": "", /*高分屏启动图片，分辨率：480x762*/
-                    "xhdpi": "", /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi": ""/*1080P高分屏启动图片，分辨率：1080x1882*/
+                    "mdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\240_282.png", /*普通屏启动图片，分辨率：240x282*/
+                    "ldpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\320_442.png", /*大屏启动图片，分辨率：320x442*/
+                    "hdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\480_762.png", /*高分屏启动图片，分辨率：480x762*/
+                    "xhdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\720_1242.png", /*720P高分屏启动图片，分辨率：720x1242*/
+                    "xxhdpi": "D:\\Sunday\\ESP8266\\dev\\espush_app\\res\\1080_1882.png"/*1080P高分屏启动图片，分辨率：1080x1882*/
                 }
             }
         }
