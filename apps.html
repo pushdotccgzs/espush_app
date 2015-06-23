@@ -112,7 +112,8 @@
 						var devices_html = plus.webview.getWebviewById('devices.html');
 						mui.fire(devices_html, 'app_info_got', {
 							appid: appid,
-							appkey: appkey
+							appkey: appkey,
+							appname: data.name,
 						});
 						//add_online_dev(appid, appkey);
 					},

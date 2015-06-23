@@ -36,8 +36,10 @@
       	window.addEventListener('pushmsg', function(event) {
       		detail = event.detail;
       		
-      		if(detail.target_type == 'app') {
+      		if(detail.target_type === 'app') {
       			document.querySelector('#push_title').innerHTML = " 设备分类 " + detail.appid;
+      		} else if(detail.target_type === 'dev') {
+      			document.querySelector('#push_title').innerHTML = " 模块 " + detail.devid;
       		}
       	});
       	
@@ -45,7 +47,13 @@
 			//用户填空判断
 			var msgformat = document.querySelector('select').value;
 			var body = document.querySelector('textarea').value;
-			
+			if(!msgformat) {
+				plus.nativeUI.toast("请选择正确的指令类型");
+				return;
+			}
+			if(!body) {
+				
+			}
 			var appid = detail.appid;
 			var appkey = detail.appkey;
 			
@@ -55,8 +63,14 @@
 				'format': msgformat,
 				'message': body
 			};
+			var url = '';
 			
-			var url = gl_protocol + gl_server + '/openapi/app/push/message/';
+			if(detail.target_type === 'app') {
+				url = gl_protocol + gl_server + '/openapi/app/push/message/';
+			} else if(detail.target_type === 'dev') {
+				url = gl_protocol + gl_server + '/openapi/dev/push/message/';
+				params['devid'] = detail.devid;
+			}
 			var sign = md5(getSignBuf('post', appid, appkey, timestamp, params));
 			url += "?" + getParams(appid, timestamp, sign);
 			mui.ajax(url, {

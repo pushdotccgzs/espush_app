@@ -30,7 +30,7 @@
 		}
 		
 		//在线终端
-		function add_online_dev(appid, appkey) {
+		function add_online_dev(appid, appkey, appname) {
 			var timestamp = Date.now();
 			var url = gl_protocol + gl_server + "/openapi/devices/list/";
 			var sign = md5(getSignBuf('get', appid, appkey, timestamp, {}));
@@ -51,7 +51,7 @@
 					}
 										
 					for(var i=0; i != online_arr.length; ++i) {
-						var s1 = ['	    <h5 class="mui-content-padded" style="margin-top: 15px;">设备分类 <span>' + appid + '</span></h5>',
+						var s1 = ['	    <h5 class="mui-content-padded" style="margin-top: 15px;">设备分类 <span>' + appname + '</span></h5>',
 						'			<ul class="mui-table-view devs">',
 						'				<li class="mui-table-view-cell">',
 						'					<a class="mui-navigate-right">' + online_arr[i].devid + '</a>',
@@ -75,8 +75,9 @@
 			detail = event.detail;
 			var appid = detail.appid;
 			var appkey = detail.appkey;
+			var appname = detail.appname;
 			
-			add_online_dev(appid, appkey);
+			add_online_dev(appid, appkey, appname);
 		}, false);
 		
 		mui(".mui-content").on('click', 'button', function(event) {
@@ -84,6 +85,23 @@
 			var appid = target.dataset['appid'];
 			var appkey = target.dataset['appkey'];
 			var devid = target.dataset['devid'];
+			
+			var detail = {
+				appid: appid,
+				appkey: appkey,
+				devid: devid,
+				target_type: 'dev'
+			}
+			var pushmsg = null;
+			if(!pushmsg) {
+				pushmsg = plus.webview.getWebviewById("pushmsg.html");
+			}
+				
+			mui.fire(pushmsg, 'pushmsg', detail);
+			
+			mui.openWindow({
+				id: 'pushmsg.html'
+			});
 		});
 	</script>
 	</body>
